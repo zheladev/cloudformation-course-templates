@@ -1,0 +1,20 @@
+---
+# Describes a fictional developer
+name: Martin D'veloper
+job: developer
+skill: Elite
+employed: false
+foods:
+  - Apple
+  - Orange
+  - Strawberry
+  - Mango
+languages:
+  perl: Elite
+  python: Elite
+  pascal: Lame
+  haskell: Lame
+education: |
+  4 GCSEs
+  3 A-Levels
+  BSc in IoT

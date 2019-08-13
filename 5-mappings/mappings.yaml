@@ -1,0 +1,27 @@
+Parameters:
+  EnvironmentType:
+    Description: Environment name
+    Type: String
+    AllowedValues: [production, development]
+    ConstraintDescription: Only prod and dev envs can be deployed
+
+# Mappings
+Mappings:
+  RegionMap:
+    eu-north-1:
+      HVM64: ami-02a6bfdcf8224bd77
+    eu-west-1:
+      HVM64: ami-096f43ef67d75e998
+  InstanceTypeEnvironment:
+    production:
+      instanceType: t2.small
+    development:
+      instanceType: t2.micro
+
+Resources:
+  MyEC2Instance:
+    Type: AWS::EC2::Instance
+    Properties:
+      ImageId: !FindInMap [RegionMap, !Ref "AWS::Region", HVM64]
+      InstanceType: !FindInMap [InstanceTypeEnvironment, !Ref EnvironmentType, instanceType]
+
