@@ -1,0 +1,58 @@
+Mappings:
+  RegionMap:
+    eu-west-1:
+      AMI: ami-096f43ef67d75e998
+      MyAz: eu-west-1a
+    eu-north-1:
+      AMI: ami-02a6bfdcf8224bd77
+      MyAz: eu-north-1a
+
+Parameters:
+  EnvironmentType:
+    Description: Environment type
+    Default: development
+    Type: String
+    AllowedValues:
+      - production
+      - development
+    ConstraintDescription: must specify development or production
+
+#Conditions
+Conditions:
+  # Whether production resources should be created and allocated
+  # Compares selected Environment type against a string literal with "production" value
+  CreateProdResources: !Equals [ !Ref EnvironmentType, production ]
+
+Resources:
+  NewVolume:
+    Type: "AWS::EC2::Volume"
+    Condition: CreateProdResources #Only created if prod
+    Properties:
+      Size: 100
+      AvailabilityZone:
+        !GetAtt EC2Instance.AvailabilityZone #Returns EC2Instance's AZ param
+
+  MountPoint:
+    Type: "AWS::EC2::VolumeAttachment"
+    Condition: CreateProdResources #Only created if prod
+    Properties:
+      InstanceId:
+        !Ref EC2Instance
+      VolumeId:
+        !Ref NewVolume
+      Device: /dev/sdh
+
+  EC2Instance:
+    Type: "AWS::EC2::Instance"
+    #No Condition key, always gets created
+    Properties:
+      ImageId: !FindInMap [RegionMap, !Ref "AWS::Region", AMI]
+      InstanceType: t2.micro
+      AvailabilityZone: !FindInMap [RegionMap, !Ref "AWS::Region", MyAz]
+    
+Outputs:
+  # Points to created volume only if it's on production, otherwise outputs nothing.
+  VolumeId:
+    Condition: CreateProdResources
+    Value:
+      !Ref NewVolume
