@@ -41,17 +41,17 @@ Parameters:
   VPC:
     Description: VPC to operate in
     Type: AWS::EC2::VPC::Id
-  SubnetIDs:
-    Description: Subnet IDs that is a List of Subnet Id
-    Type: "List<AWS::EC2::Subnet::Id>"
-  DbSubnetIpBlocks:
-    Description: "Comma delimited list of CIDR blocks"
-    Type: CommaDelimitedList
-    Default: "10.0.48.0/24, 10.0.112.0/24, 10.0.176.0/24"
-  DBPasword:
-    NoEcho: true
-    Description: Account password for the database
-    Type: String
+  # SubnetIDs:
+  #   Description: Subnet IDs that is a List of Subnet Id
+  #   Type: "List<AWS::EC2::Subnet::Id>"
+  # DbSubnetIpBlocks:
+  #   Description: "Comma delimited list of CIDR blocks"
+  #   Type: CommaDelimitedList
+  #   Default: "10.0.48.0/24, 10.0.112.0/24, 10.0.176.0/24"
+  # DBPasword:
+  #   NoEcho: true
+  #   Description: Account password for the database
+  #   Type: String
 
 ########## TEMPLATE ##########
 Resources:
